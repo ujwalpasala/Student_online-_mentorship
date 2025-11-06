@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Admin Panel</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="mentors.html">Mentors</a>
+      <a href="sessions.html">Sessions</a>
+      <a href="progress.html">Progress</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Manage Mentorship</h2>
+    <form id="mentorForm">
+      <label>Mentor Name:</label>
+      <input type="text" id="newMentor" required>
+      <button type="submit">Add Mentor</button>
+    </form>
+    <h3>Mentors List</h3>
+    <ul id="adminMentorList"></ul>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
