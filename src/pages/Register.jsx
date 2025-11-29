@@ -48,6 +48,11 @@ const RegisterSchema = Yup.object().shape({
       // In a real app, this would check against your backend
       (value) => true
     ),
+  phone: Yup.string()
+    .trim()
+    .nullable()
+    .matches(/^\+?[0-9\-\s]{7,20}$/, 'Please enter a valid phone number')
+    .notRequired(),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters')
     .max(50, 'Password must be less than 50 characters')
@@ -92,6 +97,7 @@ export default function Register() {
       const userData = {
         name: `${values.firstName} ${values.lastName}`,
         email: values.email,
+        phone: values.phone,
         password: values.password,
         role: values.role,
         interests: values.interests
@@ -140,6 +146,7 @@ export default function Register() {
                 firstName: '',
                 lastName: '',
                 email: '',
+                phone: '',
                 password: '',
                 confirmPassword: '',
                 role: '',
@@ -179,6 +186,16 @@ export default function Register() {
                           <FormLabel>Email</FormLabel>
                           <Input {...field} type="email" placeholder="Enter your email" />
                           <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="phone">
+                      {({ field, form }) => (
+                        <FormControl isInvalid={form.errors.phone && form.touched.phone}>
+                          <FormLabel>Phone</FormLabel>
+                          <Input {...field} type="tel" placeholder="+1-555-123-4567" />
+                          <FormErrorMessage>{form.errors.phone}</FormErrorMessage>
                         </FormControl>
                       )}
                     </Field>

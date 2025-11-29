@@ -28,7 +28,8 @@ export default function Mentors() {
   }, []);
 
   const handleBookSession = (mentorId) => {
-    navigate('/sessions', { state: { mentorId } });
+    const mentor = mentors.find((m) => m.id === mentorId);
+    navigate('/sessions', { state: { mentorId, mentorName: mentor?.name } });
   };
 
   return (

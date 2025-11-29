@@ -8,6 +8,7 @@ import Progress from './pages/Progress';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import './App.css';
@@ -26,6 +27,11 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 
                 {/* Protected Routes */}
+                <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
                 <Route path="/mentors" element={
                   <ProtectedRoute>
                     <Mentors />

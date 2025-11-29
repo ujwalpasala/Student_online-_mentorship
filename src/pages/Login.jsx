@@ -26,6 +26,8 @@ import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import TestAccounts from '../components/TestAccounts';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -49,28 +51,37 @@ export default function Login() {
   const from = location.state?.from?.pathname || '/';
   const bgColor = useColorModeValue('white', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const [rememberedEmail, setRememberedEmail] = useLocalStorage('rememberedEmail', '');
 
   const handleSubmit = async (values, actions) => {
     try {
       actions.setSubmitting(true);
-      const success = await login(values);
-      
-      if (success) {
+      const session = await login(values);
+
+      if (session) {
         toast({
           title: 'Welcome back!',
-          description: 'You have successfully logged in.',
+          description: `You have successfully logged in as ${session.name}.`,
           status: 'success',
           duration: 3000,
           isClosable: true,
         });
-        
+
         if (values.rememberMe) {
-          localStorage.setItem('rememberedEmail', values.email);
+          setRememberedEmail(values.email);
         } else {
-          localStorage.removeItem('rememberedEmail');
+          setRememberedEmail('');
         }
-        
-        navigate(from);
+
+        // Route based on role. Mentors go to sessions (booking) page; students go to mentors list.
+        if (session.role === 'mentor') {
+          navigate('/sessions');
+        } else if (session.role === 'admin') {
+          navigate('/admin');
+        } else {
+          // default student / other
+          navigate(from || '/mentors');
+        }
       } else {
         throw new Error('Invalid credentials');
       }
@@ -113,7 +124,7 @@ export default function Login() {
           <Stack spacing="6">
             <Stack spacing="5">
               <Formik
-                initialValues={{ email: '', password: '', rememberMe: false }}
+                initialValues={{ email: rememberedEmail || '', password: '', rememberMe: false }}
                 validationSchema={LoginSchema}
                 onSubmit={handleSubmit}
               >
@@ -184,9 +195,6 @@ export default function Login() {
                   </Form>
                 )}
               </Formik>
-            </Stack>
-
-            <Stack spacing="6">
               <Divider />
               
               <Stack spacing="3">
@@ -214,14 +222,14 @@ export default function Login() {
                 </Button>
               </Stack>
 
-              <Text textAlign="center">
-                Don't have an account?{' '}
-                <Link as={RouterLink} to="/register" color="blue.500">
-                  Sign up
-                </Link>
-              </Text>
+              {/* Sign up prompt removed */}
             </Stack>
           </Stack>
+        </Box>
+
+        {/* Test Accounts Component */}
+        <Box mt={4}>
+          <TestAccounts />
         </Box>
       </Stack>
     </Container>

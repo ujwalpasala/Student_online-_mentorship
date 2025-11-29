@@ -161,19 +161,7 @@ export default function Navbar() {
                   color={'blue.500'}>
                   Sign In
                 </Button>
-                <Button
-                  as={RouterLink}
-                  to="/register"
-                  display={{ base: 'none', md: 'inline-flex' }}
-                  fontSize={'sm'}
-                  fontWeight={600}
-                  color={'white'}
-                  bg={'blue.500'}
-                  _hover={{
-                    bg: 'blue.400',
-                  }}>
-                  Sign Up
-                </Button>
+                {/* Sign up removed as requested */}
               </>
             )}
           </Stack>
@@ -198,21 +186,7 @@ export default function Navbar() {
                   </RouterLink>
                 ) : null
               ))}
-              {!isAuthenticated && (
-                <Button
-                  as={RouterLink}
-                  to="/register"
-                  w="full"
-                  fontSize={'sm'}
-                  fontWeight={600}
-                  color={'white'}
-                  bg={'blue.500'}
-                  _hover={{
-                    bg: 'blue.400',
-                  }}>
-                  Sign Up
-                </Button>
-              )}
+              {/* Sign up removed from mobile menu as requested */}
             </Stack>
           </Box>
         </Collapse>
